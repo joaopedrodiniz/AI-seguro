@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistente de Seguros</title>
+  <link rel="stylesheet" type="text/css" href="./styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Assistente de Seguros de Vida</h1>
+    </header>
+    
+    <div class="chat-container" id="chat-container">
+      <div class="message bot">
+        <div class="avatar">
+          <span class="bot-icon">🤖</span>
+        </div>
+        <div class="message-content">
+          Olá! Sou seu assistente virtual especializado em seguros de vida. Como posso ajudar você hoje?
+        </div>
+      </div>
+    </div>
+    
+    <div class="input-container">
+      <input type="text" id="pergunta" placeholder="Digite sua pergunta..." onkeypress="handleKeyPress(event)" />
+      <button onclick="perguntar()">Enviar</button>
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>
