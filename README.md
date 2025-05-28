@@ -1,8 +1,10 @@
 # 🤖 Assistente Virtual de Seguros de Vida com IA
 
-Este é um projeto pessoal desenvolvido com o objetivo de explorar o uso de **inteligência artificial local** no contexto de **seguros de vida**, unindo aprendizado prático com uma aplicação real do mercado onde atuo atualmente.
+Este projeto nasceu da vontade de unir tecnologia e experiência do dia a dia no setor de seguros. Atuando em uma seguradora de vida, percebi como a inteligência artificial pode ser uma aliada poderosa na hora de esclarecer dúvidas e melhorar o atendimento aos clientes.
 
-Durante conversas na empresa onde trabalho (uma seguradora de vida), o tema de IA tem sido cada vez mais discutido. Isso me motivou a criar um assistente virtual que fosse capaz de responder, de forma clara e profissional, dúvidas sobre seguros de vida.
+Assim, surgiu a ideia de desenvolver um assistente virtual especializado em seguros de vida, utilizando IA local com o modelo Mistral via Ollama, sem dependência de serviços externos pagos.
+
+O objetivo é criar uma interface acessível, capaz de responder com clareza e linguagem adequada às principais dúvidas sobre esse tipo de seguro.
 
 ---
 
