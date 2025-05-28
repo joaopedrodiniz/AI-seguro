@@ -82,7 +82,7 @@ function scrollToBottom() {
     addLoadingIndicator();
     
     try {
-      const response = await fetch("/perguntar", {
+      const response = await fetch("http://localhost:3550/perguntar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: pergunta })
