@@ -5,7 +5,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,8 +26,31 @@ type OllamaStreamResponse struct {
 	Done     bool   `json:"done"`
 }
 
+// Função para carregar e montar o prompt com a pergunta
+func loadPrompt(question string) (string, error) {
+	data, err := ioutil.ReadFile("prompt.txt")
+	if err != nil {
+		return "", err
+	}
+
+	template := string(data)
+	prompt := strings.Replace(template, "{{question}}", question, 1)
+	return prompt, nil
+}
+
 func main() {
 	r := gin.Default()
+
+	r.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		c.Next()
+	})
 
 	r.Static("/", "./Chat-Layout")
 
@@ -38,9 +63,12 @@ func main() {
 			return
 		}
 
-		prompt := fmt.Sprintf(`Você é um assistente especializado em seguros de vida. Sempre responda usando uma linguagem simples e profissional. Se a pergunta não estiver relacionada a seguros, diga educadamente que não pode ajudar.
-
-Pergunta: %s`, body.Question)
+		prompt, err := loadPrompt(body.Question)
+		if err != nil {
+			fmt.Println("Erro ao carregar prompt:", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao preparar o prompt"})
+			return
+		}
 
 		payload := OllamaRequest{
 			Model:  "mistral",
@@ -62,13 +90,12 @@ Pergunta: %s`, body.Question)
 		}
 		defer resp.Body.Close()
 
-		// Processar o stream de resposta linha por linha
 		scanner := bufio.NewScanner(resp.Body)
 		var fullResponse string
 
 		for scanner.Scan() {
 			line := scanner.Text()
-			fmt.Println("Linha de resposta do Ollama:", line)
+			// fmt.Println("Linha de resposta do Ollama:", line)
 
 			var streamResp OllamaStreamResponse
 			if err := json.Unmarshal([]byte(line), &streamResp); err != nil {
@@ -88,7 +115,7 @@ Pergunta: %s`, body.Question)
 		c.JSON(http.StatusOK, gin.H{"resposta": fullResponse})
 	})
 
-	fmt.Println("Servidor iniciado na porta 8080")
+	fmt.Println("Servidor iniciado na porta 3550")
 	if err := r.Run(":3550"); err != nil {
 		fmt.Println("Erro ao iniciar servidor:", err)
 	}
